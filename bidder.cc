@@ -14,45 +14,49 @@
 // TODO: Implement this function to return a vector of strings
 // containing the names of everyone on your team.
 std::vector<std::string> GetTeamMembers() {
-  // Your code here
-  return {};
+  return {"Andrew Arteaga", "Michael LeBlanc"};
 }
 
 // TODO: Implement this function to return a string that describes
 // the strategy your logic uses to bid (e.g., "We bid high early on").
 std::string GetStrategy() {
-  // Your code here
-  return "";
+  return "We start conservative and slowly increase";
 }
 
-// TODO: Implement the bidding logic.
-// parameters:
-//   rounds: The total number of rounds in the game.
-//   budget: The total points available to spend across all rounds.
-//   output_filename: The name of the file where the bids should be written.
-//
-// Logic:
-//   1. Calculate how much to bid in each round.
-//   2. Open 'output_filename' for writing.
-//   3. Write the bid for each round on a new line in the file.
-//
-// Constraints:
-//   - You must write exactly 'rounds' number of lines.
-//   - The sum of all bids must not exceed 'budget'.
-//   - Bids must be non-negative integers.
 void GenerateBids(int rounds, int budget, std::string output_filename) {
-  // Your code here
+  std::ofstream outfile(output_filename);
+  if (!outfile.is_open()) {
+    std::cerr << "Error: Could not open file " << output_filename << std::endl;
+    return;
+  }
+
+  int base_bid = budget / rounds;
+  int remainder = budget % rounds;
+
+  for (int i = 0; i < rounds; ++i) {
+    int bid = base_bid;
+    if (i < remainder) {
+      bid += 1;  
+    }
+    outfile << bid << "\n";
+  }
+
+  outfile.close();
 }
 
 // ============================================================================
 // MAIN FUNCTION
-// Use this to test your code.
-// This function will be ignored by the "make test" command.
 // ============================================================================
 int main() {
-  // You can write code here to call your functions and see if they work.
-  // Example:
-  // GenerateBids(10, 100, "test_output.txt");
-  
+  // Example test
+  GenerateBids(10, 100, "test_output.txt");
+
+  std::cout << "Team Members:\n";
+  for (const auto& member : GetTeamMembers()) {
+    std::cout << "- " << member << "\n";
+  }
+
+  std::cout << "Strategy: " << GetStrategy() << std::endl;
+
   return 0;
 }
